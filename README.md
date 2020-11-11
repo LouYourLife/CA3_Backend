@@ -1,16 +1,15 @@
-[![Build Status](https://travis-ci.org/dat3startcode/rest-jpa-devops-startcode.svg?branch=master)](https://travis-ci.org/dat3startcode/rest-jpa-devops-startcode)
+[![Build Status](https://travis-ci.org/LouYourLife/CA3_Backend.svg?branch=master)](https://travis-ci.org/LouYourLife/CA3_Backend)
 
-*This project is meant as start code for projects and exercises given in Flow-1+2 at http://cphbusiness.dk in the Study Program "AP degree in Computer Science"*
+# Getting started with startcode for backend
 
-*Projects which are expected to use this start-code are projects that require all, or most of the following technologies:*
- - *JPA and REST*
-- *Testing, including database test*
-- *Testing, including tests of REST-API's*
-- *CI and CONTINUOUS DELIVERY*
+## Setup
+* Change persistence.xml to match your local database and setup connection
+* In pom.xml change remote server to your droplet domain name.
+* Clean/build and run to make sure everything works.
 
-### Preconditions
-*In order to use this code, you should have a local developer setup + a "matching" droplet on Digital Ocean as described in the 3. semester guidelines* 
-# Getting Started
-
-This document explains how to use this code (build, test and deploy), locally with maven, and remotely with maven controlled by Travis
- - [How to use](https://docs.google.com/document/d/1K6s6Tt65bzB8bCSE_NUE8alJrLRNTKCwax3GEm4OjOE/edit?usp=sharing)
+## Usage guide
+* Run the main method in SetupTestUsers.java to get test users in local database.(remember to change username and password)
+* LoginEndpoint.java contains endpoint to login a user and creates a token.
+* DemoResource.java contains endpoints only usable if you are already logged in as either a user or admin.
+* DefaultResource.java contains endpoint which fetches data from other servers' endpoints.
+* FetchFacade.java contains default urls for api's, and runs multiple threads parallel to fetch the information. Change these for relevant use.
