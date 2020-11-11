@@ -31,9 +31,13 @@ public class FetchFacade {
     }
 
     public List<String> fetchParallel() throws InterruptedException, ExecutionException {
-        String[] hostList = {"https://api.chucknorris.io/jokes/random", "https://icanhazdadjoke.com",
-            "https://swapi.dev/api/planets/schema", "https://swapi.dev/api/vehicles/schema", "https://swapi.dev/api/species/schema"};
+//        String[] hostList = {"https://api.chucknorris.io/jokes/random", "https://icanhazdadjoke.com",
+//            "https://swapi.dev/api/planets/schema", "https://swapi.dev/api/vehicles/schema", "https://swapi.dev/api/species/schema"};
+        String[] hostList = {"https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/2/", "https://swapi.dev/api/films/3/", 
+        "https://swapi.dev/api/films/4/", "https://swapi.dev/api/films/5/", "https://swapi.dev/api/films/6/"};
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         ExecutorService executor = Executors.newCachedThreadPool();
+        
         List<Future<String>> futures = new ArrayList<>();
         List<String> retList = new ArrayList();
 

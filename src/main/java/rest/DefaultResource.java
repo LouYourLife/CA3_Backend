@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
 import java.util.List;
+import utils.HttpUtils;
  
 /**
  * REST Web Service
@@ -32,6 +33,16 @@ public class DefaultResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getDefault() throws IOException, InterruptedException, ExecutionException {
+        //List<String> list = facade.fetchParallel();
+        String list = HttpUtils.fetchDataParallel("https://swapi.dev/api/films/1/");
+        //return GSON.toJson(list);
+        return list;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("movielist")
+    public String allMovies() throws IOException, InterruptedException, ExecutionException {
         List<String> list = facade.fetchParallel();
         return GSON.toJson(list);
     }
