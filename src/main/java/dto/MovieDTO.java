@@ -1,5 +1,7 @@
 package dto;
 
+import entities.Movie;
+
 /**
  *
  * @author vnord
@@ -24,6 +26,15 @@ public class MovieDTO {
         this.producer = producer;
         this.release_date = release_date;
         this.characters = characters;
+    }
+    
+    public MovieDTO(Movie m) {
+        this.title = m.getTitle();
+        this.episode_id = m.getEpisode_id();
+        this.opening_crawl = m.getOpening_crawl();
+        this.director = m.getDirector();
+        this.producer = m.getProducer();
+        this.release_date = m.getRelease_date();
     }
 
     public String getURL() {

@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.MovieDTO;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import javax.ws.rs.core.Context;
@@ -14,6 +15,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.POST;
 import utils.HttpUtils;
  
 /**
@@ -46,6 +49,31 @@ public class DefaultResource {
         List<String> list = facade.fetchParallel();
         return GSON.toJson(list);
     }
-
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("pitchmovies")
+    @RolesAllowed("admin")
+    public String allPitchMovies() throws IOException, InterruptedException, ExecutionException {
+        List<MovieDTO> list = facade.getAllPitchMovies();
+        return GSON.toJson(list);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("populate")
+    public void populate() throws IOException, InterruptedException, ExecutionException {
+        utils.SetupTestUsers.populateUser();
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String x(String movie) {
+        MovieDTO mDTO = GSON.fromJson(movie, MovieDTO.class);
+        MovieDTO mdto = facade.addMovie(mDTO);
+        String json = GSON.toJson(mdto);
+        return json;
+    }
    
 }
