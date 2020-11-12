@@ -43,7 +43,8 @@ public class EMF_Creator {
             System.out.println("CONNECTION_STR -->" + System.getenv("CONNECTION_STR"));
             String user = System.getenv("USER");
             String pw = System.getenv("PW");
-            String connection_str = System.getenv("CONNECTION_STR");
+            // Her lavede jeg en ny string i docker, åben docker-compose.yml for at tilføje den nye string med rigtig database.
+            String connection_str = System.getenv("CONNECTION_STR_CA3");
             Properties props = new Properties();
             props.setProperty("javax.persistence.jdbc.user", user);
             props.setProperty("javax.persistence.jdbc.password", pw);
