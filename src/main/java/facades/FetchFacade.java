@@ -36,18 +36,20 @@ public class FetchFacade {
 //        return instance;
 //    }
 
-    class Default implements Callable<String> {
+    class Default implements Callable<MovieDTO> {
 
         String url;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Default(String url) {
             this.url = url;
         }
 
         @Override
-        public String call() throws Exception {
+        public MovieDTO call() throws Exception {
             String raw = HttpUtils.fetchData(url);
-            return raw;
+            MovieDTO mdto = gson.fromJson(raw, MovieDTO.class);
+            return mdto;
         }
     }
 
@@ -63,7 +65,7 @@ public class FetchFacade {
         List<String> retList = new ArrayList();
 
         for (String url : hostList) {
-            Callable<String> urlTask = new Default(url);
+            Callable<MovieDTO> urlTask = new Default(url);
             Future future = executor.submit(urlTask);
             futures.add(future);
         }
