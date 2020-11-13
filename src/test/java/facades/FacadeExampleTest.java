@@ -1,7 +1,11 @@
 package facades;
 
+import dto.MovieDTO;
+import entities.Movie;
 import utils.EMF_Creator;
 import entities.RenameMe;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -16,7 +20,8 @@ import org.junit.jupiter.api.Test;
 public class FacadeExampleTest {
 
     private static EntityManagerFactory emf;
-    private static FacadeExample facade;
+    private static FacadeExample facade1;
+    private static FetchFacade facade;
 
     public FacadeExampleTest() {
     }
@@ -24,7 +29,8 @@ public class FacadeExampleTest {
     @BeforeAll
     public static void setUpClass() {
        emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = FacadeExample.getFacadeExample(emf);
+       facade1 = FacadeExample.getFacadeExample(emf);
+       facade = new FetchFacade();
     }
 
     @AfterAll
@@ -39,9 +45,12 @@ public class FacadeExampleTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
-            em.persist(new RenameMe("Some txt", "More text"));
-            em.persist(new RenameMe("aaa", "bbb"));
+            //em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
+            em.createQuery("DELETE from Movie").executeUpdate();
+            String[] testChar1 = {"Character1","Character2"};
+            String[] testChar2 = {"Character1","Character2","Character3"};
+            em.persist(new Movie("Title1", 1, "Opening crawl something something","director1","producer1","2020-01-01", testChar1));
+            em.persist(new Movie("Title2", 2, "Opening crawl about space","director2","producer2","2020-02-02", testChar2));
 
             em.getTransaction().commit();
         } finally {
@@ -53,11 +62,11 @@ public class FacadeExampleTest {
     public void tearDown() {
 //        Remove any data after each test was run
     }
-
-    // TODO: Delete or change this method 
+    
     @Test
-    public void testAFacadeMethod() {
-        assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
+    public void testFetchParallel() throws InterruptedException, ExecutionException {
+        List<String> list = facade.fetchParallel();
+        assertEquals(6, list.size());
     }
 
 }
