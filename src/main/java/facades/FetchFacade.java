@@ -61,17 +61,17 @@ public class FetchFacade {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         ExecutorService executor = Executors.newCachedThreadPool();
         
-        List<Future<String>> futures = new ArrayList<>();
+        List<Future<MovieDTO>> futures = new ArrayList<>();
         List<String> retList = new ArrayList();
 
         for (String url : hostList) {
             Callable<MovieDTO> urlTask = new Default(url);
-            Future future = executor.submit(urlTask);
+            Future<MovieDTO> future = executor.submit(urlTask);
             futures.add(future);
         }
 
-        for (Future<String> fut : futures) {
-            retList.add(fut.get());
+        for (Future<MovieDTO> fut : futures) {
+            retList.add(gson.toJson(fut.get()));
         }
        
         return retList;

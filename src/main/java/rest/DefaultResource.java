@@ -14,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.POST;
@@ -45,9 +46,15 @@ public class DefaultResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("movielist")
-    public String allMovies() throws IOException, InterruptedException, ExecutionException {
+    public List<MovieDTO> allMovies() throws IOException, InterruptedException, ExecutionException {
         List<String> list = facade.fetchParallel();
-        return GSON.toJson(list);
+        List<MovieDTO> listDTO = new ArrayList();
+        for(String movie : list) {
+            MovieDTO m = GSON.fromJson(movie, MovieDTO.class);
+            listDTO.add(m);
+        }
+        //return GSON.toJson(list);
+        return listDTO;
     }
     
     @GET
